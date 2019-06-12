@@ -40,6 +40,15 @@ import (
 	grpcStatus "google.golang.org/grpc/status"
 )
 
+/*
+#cgo CFLAGS: -Wall
+extern void c_init(void);
+void __attribute__((constructor)) c_main(void) {
+       c_init();
+}
+*/
+import "C"
+
 const (
 	procCgroups = "/proc/cgroups"
 	meminfo     = "/proc/meminfo"
@@ -74,6 +83,7 @@ var initRootfsMounts = []initMount{
 	{"tmpfs", "tmpfs", "/dev/shm", []string{"nosuid", "nodev"}},
 	{"devpts", "devpts", "/dev/pts", []string{"nosuid", "noexec"}},
 	{"tmpfs", "tmpfs", "/run", []string{"nosuid", "nodev"}},
+	{"tmpfs", "tmpfs", "/tmp", []string{"nosuid", "nodev"}},
 }
 
 type process struct {
